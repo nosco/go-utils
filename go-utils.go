@@ -13,18 +13,18 @@ import (
 	"github.com/segmentio/go-snakecase"
 )
 
-func SnakeCase(in string) (out string) {
-	return snakecase.Snakecase(in)
+func SnakeCase(str string) string {
+	return snakecase.Snakecase(str)
 }
 
-func CamelCase(in string) (out string) {
-	return camelcase.Camelcase(in)
+func CamelCase(str string) string {
+	return camelcase.Camelcase(str)
 }
 
-func PascalCase(in string) (out string) {
-	out = camelcase.Camelcase(in)
+func PascalCase(str string) string {
+	out := camelcase.Camelcase(str)
 	if len(out) > 0 {
 		out = strings.ToUpper(out[0:1]) + out[1:len(out)]
 	}
-	return
+	return out
 }
