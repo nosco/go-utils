@@ -96,20 +96,20 @@ func TestPascalCase(t *testing.T) {
 	}
 }
 
-func BenchmarkSnakeCase(t *testing.B) {
-	for i := 0; i < t.N; i++ {
+func BenchmarkSnakeCase(b *testing.B) {
+	for i := 0; i < b.N; i++ {
 		_ = SnakeCase("some sample text here_noething:too$amazing")
 	}
 }
 
-func BenchmarkCamelCase(t *testing.B) {
-	for i := 0; i < t.N; i++ {
+func BenchmarkCamelCase(b *testing.B) {
+	for i := 0; i < b.N; i++ {
 		_ = CamelCase("some sample text here_noething:too$amazing")
 	}
 }
 
 func BenchmarkPascalCase(t *testing.B) {
-	for i := 0; i < t.N; i++ {
+	for i := 0; i < b.N; i++ {
 		_ = PascalCase("some sample text here_noething:too$amazing")
 	}
 }
