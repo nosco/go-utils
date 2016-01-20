@@ -13,6 +13,10 @@ import (
 	"github.com/segmentio/go-snakecase"
 )
 
+func Slug(str string) string {
+	return strings.Replace(snakecase.Snakecase(str), "_", "-", -1)
+}
+
 func SnakeCase(str string) string {
 	return snakecase.Snakecase(str)
 }
