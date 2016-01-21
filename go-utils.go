@@ -7,6 +7,8 @@ Thank you @tj for switching to Go just before we did! ;)
 package utils
 
 import (
+	"errors"
+	"reflect"
 	"strings"
 
 	"github.com/segmentio/go-camelcase"
@@ -31,4 +33,25 @@ func PascalCase(str string) string {
 		out = strings.ToUpper(out[0:1]) + out[1:len(out)]
 	}
 	return out
+}
+
+// InterfaceToReflect helps ensure the reflect value is in an editable state
+// It will check the type and get the correct reference if possible
+// @TODO Make some tests
+func InterfaceToReflect(val interface{}) (reflectValue reflect.Value, err error) {
+	typ := reflect.TypeOf(val)
+
+	// @TODO Is this correct?
+	if typ.String() == "reflect.Value" {
+		reflectValue = val.(reflect.Value)
+
+	} else if typ.String()[0:1] != "*" {
+		err = errors.New("Please provide a reference to the value")
+		return
+
+	} else {
+		reflectValue = reflect.ValueOf(val).Elem()
+	}
+
+	return
 }
