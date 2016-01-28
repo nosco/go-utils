@@ -23,6 +23,10 @@ func SnakeCase(str string) string {
 	return snakecase.Snakecase(str)
 }
 
+func KebabCase(str string) string {
+	return strings.Replace(snakecase.Snakecase(str), "_", "-", -1)
+}
+
 func CamelCase(str string) string {
 	return camelcase.Camelcase(str)
 }
