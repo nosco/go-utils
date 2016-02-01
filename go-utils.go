@@ -9,6 +9,9 @@ package utils
 import (
 	"errors"
 	"reflect"
+	"regexp"
+	"runtime"
+	"strconv"
 	"strings"
 
 	"github.com/segmentio/go-camelcase"
@@ -55,6 +58,23 @@ func InterfaceToReflect(val interface{}) (reflectValue reflect.Value, err error)
 
 	} else {
 		reflectValue = reflect.ValueOf(val).Elem()
+	}
+
+	return
+}
+
+func GetStack() (stack []string) {
+	pcs := make([]uintptr, 50)
+	pcCount := runtime.Callers(2, pcs)
+
+	pathRE := regexp.MustCompile("^.*/")
+
+	for i := 0; i < pcCount; i++ {
+		pcFunc := runtime.FuncForPC(pcs[i])
+		file, line := pcFunc.FileLine(pcs[i])
+		fileName := pathRE.ReplaceAllString(file, "")
+
+		stack = append(stack, "["+fileName+":"+strconv.Itoa(line)+"]: "+pcFunc.Name())
 	}
 
 	return
