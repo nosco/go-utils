@@ -63,7 +63,7 @@ func InterfaceToReflect(val interface{}) (reflectValue reflect.Value, err error)
 	return
 }
 
-func GetStack() (stack []string) {
+func GetCallStack() (stack []string) {
 	pcs := make([]uintptr, 50)
 	pcCount := runtime.Callers(2, pcs)
 
