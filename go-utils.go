@@ -8,6 +8,7 @@ package utils
 
 import (
 	"errors"
+	"log"
 	"reflect"
 	"regexp"
 	"runtime"
@@ -78,4 +79,9 @@ func GetCallStack() (stack []string) {
 	}
 
 	return
+}
+
+func PrintCallStack() {
+	stack := GetCallStack()
+	log.Println("Call stack:\n", strings.Join(stack[1:len(stack)-1], "\n "))
 }
