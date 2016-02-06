@@ -64,6 +64,45 @@ func InterfaceToReflect(val interface{}) (reflectValue reflect.Value, err error)
 	return
 }
 
+var callerRE *regexp.Regexp
+
+func init() {
+	// Matching e.g. (*ServiceName).ServiceMethod
+	callerRE = regexp.MustCompile("(?:\\(\\*{0,1}([^\\)]*?)\\)|([^\\.]+))\\.([^\\.]+)$")
+}
+
+func GetCallerName() (callerName string) {
+	pc, _, _, ok := runtime.Caller(2)
+	if !ok {
+		return
+	}
+
+	pcFunc := runtime.FuncForPC(pc)
+	matches := callerRE.FindStringSubmatch(pcFunc.Name())
+
+	if matches == nil || len(matches) != 4 {
+		return
+	}
+
+	return matches[1] + matches[2] + "." + matches[3]
+}
+
+func GetCallerNames() (typeName, callerName string) {
+	pc, _, _, ok := runtime.Caller(2)
+	if !ok {
+		return
+	}
+
+	pcFunc := runtime.FuncForPC(pc)
+	matches := callerRE.FindStringSubmatch(pcFunc.Name())
+
+	if matches == nil || len(matches) != 4 {
+		return
+	}
+
+	return matches[1] + matches[2], matches[3]
+}
+
 func GetCallStack() (stack []string) {
 	pcs := make([]uintptr, 50)
 	pcCount := runtime.Callers(2, pcs)
@@ -74,7 +113,6 @@ func GetCallStack() (stack []string) {
 		pcFunc := runtime.FuncForPC(pcs[i])
 		file, line := pcFunc.FileLine(pcs[i])
 		fileName := pathRE.ReplaceAllString(file, "")
-
 		stack = append(stack, "["+fileName+":"+strconv.Itoa(line)+"]: "+pcFunc.Name())
 	}
 
