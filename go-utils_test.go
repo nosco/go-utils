@@ -40,6 +40,34 @@ func TestSnakeCase(t *testing.T) {
 	}
 }
 
+func TestKebabCase(t *testing.T) {
+	samples := []sample{
+		{"sample text", "sample-text"},
+		{"sample-text", "sample-text"},
+		{"sample_text", "sample-text"},
+		{"sample___text", "sample-text"},
+		{"sampleText", "sample-text"},
+		{"inviteYourCustomersAddInvites", "invite-your-customers-add-invites"},
+		{"sample 2 Text", "sample-2-text"},
+		{"   sample   2    Text   ", "sample-2-text"},
+		{"   $#$sample   2    Text   ", "sample-2-text"},
+		{"SAMPLE 2 TEXT", "sample-2-text"},
+		{"___$$Base64Encode", "base64-encode"},
+		{"FOO:BAR$BAZ", "foo-bar-baz"},
+		{"FOO#BAR#BAZ", "foo-bar-baz"},
+		{"something.com", "something-com"},
+		{"$something%", "something"},
+		{"something.com", "something-com"},
+		{"•¶§ƒ˚foo˙∆˚¬", "foo"},
+	}
+
+	for _, sample := range samples {
+		if out := KebabCase(sample.str); out != sample.out {
+			t.Errorf("got %q from %q, expected %q", out, sample.str, sample.out)
+		}
+	}
+}
+
 func TestCamelCase(t *testing.T) {
 	samples := []sample{
 		{"sample text", "sampleText"},
@@ -102,13 +130,19 @@ func BenchmarkSnakeCase(b *testing.B) {
 	}
 }
 
+func BenchmarkKebabCase(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		_ = SnakeCase("some sample text here_noething:too$amazing")
+	}
+}
+
 func BenchmarkCamelCase(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		_ = CamelCase("some sample text here_noething:too$amazing")
 	}
 }
 
-func BenchmarkPascalCase(t *testing.B) {
+func BenchmarkPascalCase(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		_ = PascalCase("some sample text here_noething:too$amazing")
 	}
