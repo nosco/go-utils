@@ -45,11 +45,11 @@ func PascalCase(str string) string {
 
 // InterfaceToReflect helps ensure the reflect value is in an editable state
 // It will check the type and get the correct reference if possible
-// @TODO Make some tests
+// TODO(dan) Make some tests
 func InterfaceToReflect(val interface{}) (reflectValue reflect.Value, err error) {
 	typ := reflect.TypeOf(val)
 
-	// @TODO Is this correct?
+	// TODO(dan) Is this correct?
 	if typ.String() == "reflect.Value" {
 		reflectValue = val.(reflect.Value)
 
