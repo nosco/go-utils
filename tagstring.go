@@ -59,7 +59,7 @@ func (tag TagString) Get(key string) string {
 	return reflect.StructTag(tag).Get(key)
 }
 
-// TODO(dan) All of the following functions can easily be made faster
+// TODO(morphar) All of the following functions can easily be made faster
 // Look at reflect's func (tag StructTag) Get(key string) string
 // It iterates instead of doing regexps
 // These are actually also wrong, as the values can't have " in them
