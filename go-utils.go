@@ -71,8 +71,8 @@ func init() {
 	callerRE = regexp.MustCompile("(?:\\(\\*{0,1}([^\\)]*?)\\)|([^\\.]+))\\.([^\\.]+)$")
 }
 
-func GetCallerName() (callerName string) {
-	pc, _, _, ok := runtime.Caller(2)
+func GetCallerName(skip int) (callerName string) {
+	pc, _, _, ok := runtime.Caller(skip)
 	if !ok {
 		return
 	}
@@ -87,8 +87,8 @@ func GetCallerName() (callerName string) {
 	return matches[1] + matches[2] + "." + matches[3]
 }
 
-func GetCallerNames() (typeName, callerName string) {
-	pc, _, _, ok := runtime.Caller(2)
+func GetCallerNames(skip int) (typeName, callerName string) {
+	pc, _, _, ok := runtime.Caller(skip)
 	if !ok {
 		return
 	}
