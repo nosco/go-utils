@@ -23,6 +23,12 @@ func Slug(str string) string {
 	return strings.Replace(snakecase.Snakecase(str), "_", "-", -1)
 }
 
+func UnCase(str string) string {
+	str = strings.Replace(snakecase.Snakecase(str), "_", " ", -1)
+	str = strings.ToUpper(str[0:1]) + str[1:]
+	return str
+}
+
 func SnakeCase(str string) string {
 	return snakecase.Snakecase(str)
 }
