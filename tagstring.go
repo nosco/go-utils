@@ -32,7 +32,7 @@ func (a byName) Less(i, j int) bool {
 	return a[i].name < a[j].name
 }
 
-// Initialise the sort regexp
+// Initialize the sort regexp
 var tagStringRegExp = regexp.MustCompile(`(?:^| )([^:"]+):"([^"]*)"`)
 
 // Sort the tags alphabetically, except favor the json tag
