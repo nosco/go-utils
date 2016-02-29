@@ -6,7 +6,10 @@ Thank you @tj for switching to Go just before we did! ;)
 
 package utils
 
-import "testing"
+import (
+	"strconv"
+	"testing"
+)
 
 type sample struct {
 	str, out string
@@ -186,6 +189,47 @@ func TestPascalCase(t *testing.T) {
 	}
 }
 
+func TestUniqueInts(t *testing.T) {
+	expectedInts := []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
+	var ints []int
+	for i := 0; i < 100; i++ {
+		ints = append(ints, i%10)
+	}
+	uniqueInts := UniqueInts(ints)
+
+	if len(expectedInts) != len(uniqueInts) {
+		t.Error("Length of uniqueInts does not match the length of expectedInts")
+	}
+}
+
+func TestUniqueStrings(t *testing.T) {
+	expectedStrings := []string{"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"}
+	var strings []string
+	for i := 0; i < 100; i++ {
+		strings = append(strings, strconv.Itoa(i%10))
+	}
+	uniqueStrings := UniqueStrings(strings)
+
+	if len(expectedStrings) != len(uniqueStrings) {
+		t.Error("Length of uniqueStrings does not match the length of expectedStrings")
+	}
+}
+
+func TestUnique(t *testing.T) {
+	expectedInts := []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
+	var ints []int
+	for i := 0; i < 100; i++ {
+		ints = append(ints, i%10)
+	}
+
+	tmpInts, _ := Unique(ints)
+	uniqueInts := tmpInts.([]int)
+
+	if len(expectedInts) != len(uniqueInts) {
+		t.Error("Length of uniqueInts does not match the length of expectedInts")
+	}
+}
+
 func BenchmarkSnakeCase(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		_ = SnakeCase("some sample text here_noething:too$amazing")
@@ -207,5 +251,213 @@ func BenchmarkCamelCase(b *testing.B) {
 func BenchmarkPascalCase(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		_ = PascalCase("some sample text here_noething:too$amazing")
+	}
+}
+
+func BenchmarkUniqueIntsSmallFewUniques(b *testing.B) {
+	var ints []int
+	for i := 0; i < 100; i++ {
+		ints = append(ints, i%10)
+	}
+
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		_ = UniqueInts(ints)
+	}
+}
+
+func BenchmarkUniqueIntsSmallManyUniques(b *testing.B) {
+	var ints []int
+	for i := 0; i < 100; i++ {
+		ints = append(ints, i%50)
+	}
+
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		_ = UniqueInts(ints)
+	}
+}
+
+func BenchmarkUniqueIntsLargeFewUniques(b *testing.B) {
+	var ints []int
+	for i := 0; i < 100000; i++ {
+		ints = append(ints, i%10)
+	}
+
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		_ = UniqueInts(ints)
+	}
+}
+
+func BenchmarkUniqueIntsLargeManyUniques(b *testing.B) {
+	var ints []int
+	for i := 0; i < 100000; i++ {
+		ints = append(ints, i%10000)
+	}
+
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		_ = UniqueInts(ints)
+	}
+}
+
+func BenchmarkUniqueStringsSmallFewUniques(b *testing.B) {
+	var strings []string
+	for i := 0; i < 100; i++ {
+		strings = append(strings, strconv.Itoa(i%10))
+	}
+
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		_ = UniqueStrings(strings)
+	}
+}
+
+func BenchmarkUniqueStringsSmallManyUniques(b *testing.B) {
+	var strings []string
+	for i := 0; i < 100; i++ {
+		strings = append(strings, strconv.Itoa(i%50))
+	}
+
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		_ = UniqueStrings(strings)
+	}
+}
+
+func BenchmarkUniqueStringsLargeFewUniques(b *testing.B) {
+	var strings []string
+	for i := 0; i < 100000; i++ {
+		strings = append(strings, strconv.Itoa(i%10))
+	}
+
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		_ = UniqueStrings(strings)
+	}
+}
+
+func BenchmarkUniqueStringsLargeManyUniques(b *testing.B) {
+	var strings []string
+	for i := 0; i < 100000; i++ {
+		strings = append(strings, strconv.Itoa(i%10000))
+	}
+
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		_ = UniqueStrings(strings)
+	}
+}
+
+func BenchmarkUniqueSmallIntsFewUniques(b *testing.B) {
+	var ints []int
+	for i := 0; i < 100; i++ {
+		ints = append(ints, i%10)
+	}
+
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		_, _ = Unique(ints)
+	}
+}
+
+func BenchmarkUniqueSmallIntsManyUniques(b *testing.B) {
+	var ints []int
+	for i := 0; i < 100; i++ {
+		ints = append(ints, i%50)
+	}
+
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		_, _ = Unique(ints)
+	}
+}
+
+func BenchmarkUniqueLargeIntsFewUniques(b *testing.B) {
+	var ints []int
+	for i := 0; i < 100000; i++ {
+		ints = append(ints, i%10)
+	}
+
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		_, _ = Unique(ints)
+	}
+}
+
+func BenchmarkUniqueLargeIntsManyUniques(b *testing.B) {
+	var ints []int
+	for i := 0; i < 100000; i++ {
+		ints = append(ints, i%10000)
+	}
+
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		_, _ = Unique(ints)
+	}
+}
+
+func BenchmarkUniqueSmallStringsFewUniques(b *testing.B) {
+	var strings []string
+	for i := 0; i < 100; i++ {
+		strings = append(strings, strconv.Itoa(i%10))
+	}
+
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		_, _ = Unique(strings)
+	}
+}
+
+func BenchmarkUniqueSmallStringsManyUniques(b *testing.B) {
+	var strings []string
+	for i := 0; i < 100; i++ {
+		strings = append(strings, strconv.Itoa(i%50))
+	}
+
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		_, _ = Unique(strings)
+	}
+}
+
+func BenchmarkUniqueLargeStringsFewUniques(b *testing.B) {
+	var strings []string
+	for i := 0; i < 100000; i++ {
+		strings = append(strings, strconv.Itoa(i%10))
+	}
+
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		_, _ = Unique(strings)
+	}
+}
+
+func BenchmarkUniqueLargeStringsManyUniques(b *testing.B) {
+	var strings []string
+	for i := 0; i < 100000; i++ {
+		strings = append(strings, strconv.Itoa(i%10000))
+	}
+
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		_, _ = Unique(strings)
 	}
 }

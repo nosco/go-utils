@@ -44,9 +44,54 @@ func CamelCase(str string) string {
 func PascalCase(str string) string {
 	out := camelcase.Camelcase(str)
 	if len(out) > 0 {
-		out = strings.ToUpper(out[0:1]) + out[1:len(out)]
+		out = strings.ToUpper(out[0:1]) + out[1:]
 	}
 	return out
+}
+
+func UniqueInts(arr []int) (unique []int) {
+	tmpMap := map[int]bool{}
+	for i := 0; i < len(arr); i++ {
+		tmpMap[arr[i]] = true
+	}
+	for val := range tmpMap {
+		unique = append(unique, val)
+	}
+	return
+}
+
+func UniqueStrings(arr []string) (unique []string) {
+	tmpMap := map[string]bool{}
+	for i := 0; i < len(arr); i++ {
+		tmpMap[arr[i]] = true
+	}
+	for val := range tmpMap {
+		unique = append(unique, val)
+	}
+	return
+}
+
+func Unique(arr interface{}) (unique interface{}, err error) {
+	arrType := reflect.TypeOf(arr)
+	arrValue := reflect.ValueOf(arr)
+
+	if arrType.Kind().String() != "slice" {
+		return nil, errors.New("Not a slice")
+	}
+
+	tmpMap := map[interface{}]bool{}
+	for i := 0; i < arrValue.Len(); i++ {
+		tmpMap[arrValue.Index(i).Interface()] = true
+	}
+
+	newArr := reflect.MakeSlice(arrType, 0, arrValue.Len())
+	for val := range tmpMap {
+		newArr = reflect.Append(newArr, reflect.ValueOf(val))
+	}
+
+	unique = newArr.Interface()
+
+	return
 }
 
 // InterfaceToReflect helps ensure the reflect value is in an editable state
