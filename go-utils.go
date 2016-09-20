@@ -49,6 +49,15 @@ func PascalCase(str string) string {
 	return out
 }
 
+func StringInSlice(searchStr string, strs []string) bool {
+	for _, str := range strs {
+		if searchStr == str {
+			return true
+		}
+	}
+	return false
+}
+
 func UniqueInts(arr []int) (unique []int) {
 	tmpMap := map[int]bool{}
 	for i := 0; i < len(arr); i++ {
