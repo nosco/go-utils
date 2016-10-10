@@ -1,0 +1,6 @@
+[submodule "vendor/github.com/segmentio/go-camelcase"]
+	path = vendor/github.com/segmentio/go-camelcase
+	url = https://github.com/segmentio/go-camelcase
+[submodule "vendor/github.com/segmentio/go-snakecase"]
+	path = vendor/github.com/segmentio/go-snakecase
+	url = https://github.com/segmentio/go-snakecase
